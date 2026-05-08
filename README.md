@@ -112,7 +112,7 @@ mkdir -p ~/ros2_ws/src
 
 ```bash
 cd ~/ros2_ws/src
-git clone YOUR_REPOSITORY_LINK
+git clone my_repository_link
 ```
 
 ---
