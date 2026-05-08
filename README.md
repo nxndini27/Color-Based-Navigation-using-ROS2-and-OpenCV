@@ -49,10 +49,14 @@ color-based-navigation-ros2/
 ├── LICENSE
 │
 ├── screenshots/
-│   ├── gazebo_world.png
-│   ├── camera_feed.png
-│   ├── green_mask.png
-│   └── tracking.png
+│   ├── RQT_IMAGE_VIEW.png
+│   ├── botwithsphere.png
+│   ├── error_distance.png
+│   └── cameraview.png
+│   └── greenmask_sphere.png
+│   └── rqt_turtleworld.png
+│   └── turtlebot3_world.png
+│
 │
 ├── videos/
 │   └── demo.mp4
@@ -65,9 +69,6 @@ color-based-navigation-ros2/
     ├── package.xml
     ├── setup.py
     ├── setup.cfg
-    │
-    ├── launch/
-    │   └── full_sim.launch.py
     │
     ├── resource/
     │   └── color_nav
