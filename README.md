@@ -144,7 +144,12 @@ source install/setup.bash
 export TURTLEBOT3_MODEL=waffle
 ros2 launch turtlebot3_gazebo empty_world.launch.py
 ```
+But if you want to run it in the turtlebot world, run this instead of the top command:
 
+```bash
+export TURTLEBOT3_MODEL=waffle
+ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
+```
 ---
 
 ## Terminal 2 — Spawn Green Sphere
