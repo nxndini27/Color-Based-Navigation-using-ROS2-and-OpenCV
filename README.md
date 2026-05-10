@@ -59,7 +59,8 @@ color-based-navigation-ros2/
 │
 │
 ├── videos/
-│   └── demo.mp4
+│   └── working_turtlebot_world.webm
+│   └── working_emptyworld_turtle.webm
 │
 ├── green_sphere/
 │   └── model.sdf
