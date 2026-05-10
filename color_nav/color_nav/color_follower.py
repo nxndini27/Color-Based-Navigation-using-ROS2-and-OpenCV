@@ -52,7 +52,7 @@ class ColorFollower(Node):
         self.object_detected = False
 
         # Controller gain
-        self.kp = 0.002
+        self.kp = 0.001
 
         self.get_logger().info("Advanced Color Follower Started!")
 
@@ -114,22 +114,27 @@ class ColorFollower(Node):
 
                 self.object_detected = True
 
-                x, y, w, h = cv2.boundingRect(largest)
+                # Better center calculation using contour moments
+                M = cv2.moments(largest)
 
-                center_x = x + w // 2
-                center_y = y + h // 2
+                if M["m00"] != 0:
+                    center_x = int(M["m10"] / M["m00"])
+                    center_y = int(M["m01"] / M["m00"])
+                else:
+                    center_x = 0
+                    center_y = 0
 
                 image_center_x = frame.shape[1] // 2
 
                 error = center_x - image_center_x
 
-                # Draw bounding box
-                cv2.rectangle(
+                # Draw contour
+                cv2.drawContours(
                     frame,
-                    (x, y),
-                    (x + w, y + h),
+                    [largest],
+                    -1,
                     (0, 255, 0),
-                    2
+                    3
                 )
 
                 # Draw center
@@ -139,6 +144,15 @@ class ColorFollower(Node):
                     5,
                     (0, 0, 255),
                     -1
+                )
+
+                # Draw image center line
+                cv2.line(
+                    frame,
+                    (image_center_x, 0),
+                    (image_center_x, frame.shape[0]),
+                    (255, 0, 0),
+                    2
                 )
 
                 # Show error
@@ -163,9 +177,10 @@ class ColorFollower(Node):
                     2
                 )
 
-                # ---------- STOP IF CLOSE ----------
+                # ---------- OBJECT FOLLOWING ----------
 
-                if self.front_distance < 0.8:
+                # Stop only if object is close AND centered
+                if self.front_distance < 0.8 and abs(error) < 40:
 
                     twist.linear.x = 0.0
                     twist.angular.z = 0.0
@@ -177,8 +192,11 @@ class ColorFollower(Node):
                     # P-controller steering
                     twist.angular.z = -self.kp * error
 
-                    # Forward motion
-                    twist.linear.x = 0.10
+                    # Move forward only if mostly aligned
+                    if abs(error) < 120:
+                        twist.linear.x = 0.10
+                    else:
+                        twist.linear.x = 0.0
 
         # ---------------- SEARCH MODE ----------------
 
